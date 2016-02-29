@@ -6,17 +6,25 @@
 #include "Includes.h"
 #include "Serial.h"
 #include "LED.h"
+#include "Util.h"
 
+#define FRAME_RATE 30.0
 
 void updateLeds()
 {
     static __uint8_t hue = 1;
+    static HSV hsv;
+    hsv.h = hue;
+    hsv.s = 255;
+    hsv.v = 255;
+
+    RGB rgb = hsvToRgb(hsv);
 
     for (int i = 0; i < NUM_LEDS; i++) {
         //LED led = leds[i];
-        leds[i].r = hue;
-        leds[i].g = hue;
-        leds[i].b = hue;
+        leds[i].r = rgb.r;
+        leds[i].g = rgb.g;
+        leds[i].b = rgb.b;
         //leds[i].a = 255;
 
         //leds[i] = led;
@@ -50,7 +58,7 @@ int main()
 
         i++;
 
-        sleep(1);
+        usleep(10 * 1000);
     }
 
     return 0;
