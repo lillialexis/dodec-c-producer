@@ -10,5 +10,6 @@
 #include <sys/fcntl.h>
 #include <sys/termios.h>
 
+#include "LED.h"
 
 #endif //DODEC_C_PRODUCER_INCLUDES_H

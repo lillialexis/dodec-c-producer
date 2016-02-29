@@ -5,13 +5,29 @@
 #include <unistd.h>
 #include "Includes.h"
 #include "Serial.h"
-
-//#include <iostream>
-//#include <sys/fcntl.h>
-//#include <sys/termios.h>
+#include "LED.h"
 
 
-int main() {
+void updateLeds()
+{
+    static __uint8_t hue = 1;
+
+    for (int i = 0; i < NUM_LEDS; i++) {
+        //LED led = leds[i];
+        leds[i].r = hue;
+        leds[i].g = hue;
+        leds[i].b = hue;
+        //leds[i].a = 255;
+
+        //leds[i] = led;
+    }
+
+    hue = (__uint8_t) ((hue + 1) % 255);
+}
+
+int main()
+{
+    initLEDs();
 
     int serialDevice = new_serial_device("/dev/ttyS0");
 
@@ -20,16 +36,19 @@ int main() {
         return 1;
     }
 
+    __uint8_t i = 0;
     while (1) {
         printf("Looping...\n");
 
-        char foo[] = {0, 0, 0, 0};
-        int status = write_data(serialDevice, foo, 4);
+        updateLeds();
+        int status = write_data(serialDevice, leds, NUM_LEDS * sizeof(LED));
 
         if (status < 0) {
             printf("Error writing to serial device!\n");
             return 1;
         }
+
+        i++;
 
         sleep(1);
     }
