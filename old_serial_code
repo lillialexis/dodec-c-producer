@@ -1,6 +1,8 @@
-#include <iostream>
-#include <sys/fcntl.h>
-#include <sys/termios.h>
+#include "Includes.h"
+
+//#include <iostream>
+//#include <sys/fcntl.h>
+//#include <sys/termios.h>
 
 using namespace std;
 
