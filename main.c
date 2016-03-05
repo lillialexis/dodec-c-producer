@@ -12,8 +12,6 @@ long programStartTime   = 0;
 long loopStartTime      = 0;
 long idealLoopEndTime   = 0;
 long timeAfterRender    = 0;
-long sampleStartTime    = 0;
-int  lastSampleDuration = 0;
 long drawStartTime      = 0;
 int  lastDrawDuration   = 0;
 
@@ -26,11 +24,6 @@ long currentTimeInMicroseconds()
 int ptd(long someTimeVal)
 {
     return (int) (someTimeVal - programStartTime);
-}
-
-/* Print milliseconds */
-int pms(int someTimeVal) {
-    return someTimeVal;
 }
 
 /* Return 0 if successful, 1 otherwise. */
@@ -73,16 +66,6 @@ int draw()
     return 0;
 }
 
-///* Return 0 if successful, 1 otherwise. */
-//int sample()
-//{
-//    /* This is where we would sample anything like sounds or something,
-//     * which I guess we're only sampling between the rendering and the
-//     * drawing. Probably not the best design, but since we're not even
-//     * sampling anything at all right now, I don't really care. */
-//    return 0;
-//}
-
 /* Return 0 if successful, 1 otherwise. */
 int loop()
 {
@@ -110,30 +93,6 @@ int loop()
         if (timeAfterRender >= idealLoopEndTime) {
             printf("RENDERING TAKING TOO LONG!!\n");
         }
-
-//        /* Assuming we didn't take up the whole duration of our loop (as the 'while' check will immediately fail if
-//         * we did), sleep for tiny increments until we get to less than one increment away from our ideal draw time,
-//         * sampling whatever it is that we want to sample. Hopefully sampling doesn't take a whole lot longer than
-//         * our sleep increment, or this will slow our loop down. Honestly, I feel like sampling should probably
-//         * just take place on a separate thread, since what's the point of sampling a bunch of times between
-//         * rendering frames. We'd only end up using the data from the last sample anyway. But whatevs. */
-//        while (currentTimeInMicroseconds() < (idealLoopEndTime - CLOCK_SLEEP_INTERVAL)) {
-//            sampleStartTime = currentTimeInMicroseconds();
-//
-//            status = sample();
-//            if (status != 0) {
-//                return 1;
-//            }
-//
-//            lastSampleDuration = (int) (currentTimeInMicroseconds() - sampleStartTime);
-//            printf("Sample duration: %i, clock sleep interval: %u, remaining interval: %i\n",
-//                   pms(lastSampleDuration), CLOCK_SLEEP_INTERVAL, CLOCK_SLEEP_INTERVAL - lastSampleDuration);
-//
-//            if (CLOCK_SLEEP_INTERVAL - lastSampleDuration > 0)
-//                usleep(CLOCK_SLEEP_INTERVAL - lastSampleDuration);
-//            else
-//                printf("SAMPLING TAKING TOO LONG!!\n");
-//        }
 
         useconds_t sleepTime = (useconds_t) (idealLoopEndTime > timeAfterRender ? idealLoopEndTime - timeAfterRender : 0);
         printf("Sleep duration: %u\n", sleepTime);
@@ -168,15 +127,6 @@ int main()
         printf("Error creating serial device!\n");
         return 1;
     }
-
-//    while (1) {
-//        static int loopResult = 0;
-//
-//        loopResult = loop();
-//
-//        if (loopResult != 0)
-//            return loopResult;
-//    }
 
     /* Should only exit on error... */
     int status = loop();
