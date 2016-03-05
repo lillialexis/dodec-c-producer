@@ -19,6 +19,6 @@ typedef struct {
 	__uint8_t v;
 } HSV;
 
-RGB hsvToRgb (HSV hsv);//, RGB rgb);
+RGB hsvToRgb(HSV hsv);//, RGB rgb);
 
 #endif //DODEC_C_PRODUCER_UTIL_H

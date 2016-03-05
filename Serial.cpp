@@ -3,11 +3,9 @@
 //
 
 #include <unistd.h>
-#include <sys/errno.h>
-#include <string.h>
 #include <stdio.h>
 #include "Includes.h"
-#include "Serial.h"
+
 
 /* Returning -1 is bad I think */
 int	write_data(int fileDescriptor, const void *data, size_t size)

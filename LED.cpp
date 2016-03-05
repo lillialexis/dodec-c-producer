@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "Includes.h"
 
+LED *leds;
+
 LED newLed()
 {
     LED led;
@@ -19,7 +21,7 @@ LED newLed()
 
 void initLEDs()
 {
-    leds = malloc(NUM_LEDS * sizeof(LED));
+    leds = (LED *) malloc(NUM_LEDS * sizeof(LED));
 
     for (int i = 0; i < NUM_LEDS; i++) {
         leds[i] = newLed();
