@@ -7,8 +7,6 @@
 
 #include <unistd.h>
 
-#define NUM_LEDS 181
-
 typedef struct
 {
     __uint8_t r;
@@ -17,7 +15,7 @@ typedef struct
 //    __uint8_t a;
 } LED;
 
- LED *leds;
+LED *leds;
 
 void initLEDs();
 

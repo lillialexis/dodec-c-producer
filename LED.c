@@ -3,8 +3,7 @@
 //
 
 #include <stdlib.h>
-#include <string.h>
-#include "LED.h"
+#include "Includes.h"
 
 LED newLed()
 {
