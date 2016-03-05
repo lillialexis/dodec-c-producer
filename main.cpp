@@ -6,6 +6,7 @@
 #include <time.h>
 #include "Includes.h"
 
+
 int serialDevice = -1;
 
 long programStartTime   = 0;

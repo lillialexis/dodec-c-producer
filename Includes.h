@@ -12,7 +12,6 @@
 #include <sys/termios.h>
 
 #include "Globals.h"
-
 #include "LED.h"
 #include "Serial.h"
 #include "Util.h"

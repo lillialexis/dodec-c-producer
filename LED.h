@@ -15,7 +15,7 @@ typedef struct
 //    __uint8_t a;
 } LED;
 
-LED *leds;
+extern LED *leds;
 
 void initLEDs();
 

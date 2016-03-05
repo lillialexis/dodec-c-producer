@@ -9,9 +9,9 @@
 
 #define NUM_LEDS 181
 
-uint FRAME_RATE                ;
-useconds_t LOOP_TIME           ; /* In microseconds: 1,000,000 / FRAME_RATE */
-useconds_t CLOCK_SLEEP_INTERVAL; /* In microseconds; the tiny increments the main loop should sleep after rendering and before the next frame */
+extern uint FRAME_RATE                ;
+extern useconds_t LOOP_TIME           ; /* In microseconds: 1,000,000 / FRAME_RATE */
+extern useconds_t CLOCK_SLEEP_INTERVAL; /* In microseconds; the tiny increments the main loop should sleep after rendering and before the next frame */
 
 void initGlobals();
 
