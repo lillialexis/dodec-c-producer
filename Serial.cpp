@@ -4,7 +4,9 @@
 
 #include <unistd.h>
 #include <stdio.h>
-#include "Includes.h"
+#include <sys/termios.h>
+#include <sys/fcntl.h>
+#include "Serial.h"
 
 
 /* Returning -1 is bad I think */

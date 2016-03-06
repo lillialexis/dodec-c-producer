@@ -7,17 +7,35 @@
 
 #include <unistd.h>
 
-typedef struct {
+//typedef struct {
+//	__uint8_t g;
+//	__uint8_t r;
+//	__uint8_t b;
+//} RGB;
+//
+//typedef struct {
+//	__uint8_t h;
+//	__uint8_t s;
+//	__uint8_t v;
+//} HSV;
+
+struct RGB {
+#ifdef GRB_ORDER
 	__uint8_t g;
 	__uint8_t r;
 	__uint8_t b;
-} RGB;
+#else
+	__uint8_t r;
+	__uint8_t g;
+	__uint8_t b;
+#endif
+};
 
-typedef struct {
+struct HSV {
 	__uint8_t h;
 	__uint8_t s;
 	__uint8_t v;
-} HSV;
+};
 
 RGB hsvToRgb(HSV hsv);//, RGB rgb);
 

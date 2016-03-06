@@ -6,18 +6,19 @@
 #define DODEC_C_PRODUCER_LED_H
 
 #include <unistd.h>
+#include "Util.h"
 
-typedef struct
-{
-    __uint8_t r;
-    __uint8_t g;
-    __uint8_t b;
-//    __uint8_t a;
-} LED;
-
-extern LED *leds;
-
-void initLEDs();
+//typedef struct
+//{
+//    __uint8_t r;
+//    __uint8_t g;
+//    __uint8_t b;
+////    __uint8_t a;
+//} LED;
+//
+//extern LED *leds;
+//
+//void initLEDs();
 
 //LED *newLed();
 
@@ -29,6 +30,38 @@ void initLEDs();
 //__uint8_t getGreen(LED *led, __uint8_t red);
 //__uint8_t getBlue (LED *led, __uint8_t red);
 //__uint8_t getAlpha(LED *led, __uint8_t red);
+
+typedef enum
+{
+    RISING  = 1,
+    FALLING = -1,
+    UNKNOWN = 0
+} UpdateDirection;
+
+
+class LED {
+    int group;
+    bool isCenter;
+
+    HSV startHSV;
+    HSV stopHSV;
+
+    long startTime;
+    long stopTime;
+
+    UpdateDirection hueDirection;
+    UpdateDirection valueDirection;
+
+public:
+
+    RGB getCurrentRGB(long frameNumber);
+
+    long getStopTime();
+    void setStopTime(long newStopTime);
+
+    void setStopHSV(HSV newStopHSV);
+
+};
 
 
 
