@@ -53,6 +53,7 @@ class LED {
     UpdateDirection valueDirection;
 
 public:
+    void setGroup(int group);
 
     RGB getCurrentRGB(long frameNumber);
 

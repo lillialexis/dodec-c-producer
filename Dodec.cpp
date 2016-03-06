@@ -11,7 +11,7 @@ Dodec::Dodec() {
     num_leds   = NUM_LEDS;
     max_groups = MAX_GROUPS;
 
-    boards = new Board[num_boards];
+    boards = new Board[num_boards](max_groups);
 
     staticMasterGroups = new Group[max_groups];
     dynamicMasterGroups = new Group[max_groups];
@@ -27,10 +27,29 @@ Dodec::Dodec() {
         leds[i] = new LED[num_leds];
 
         for (int j = 0; j < num_leds; j++) {
-            leds[i][j] = LED();
-        }
+            LED led;
 
-        boards[i] = Board();
+            int foo = j % 36;
+            if (foo == 0) {
+                led.setGroup(0);
+            } else if (foo <= 8) {
+                led.setGroup(1);
+            } else if (foo <= 15) {
+                led.setGroup(2);
+            } else if (foo <= 21) {
+                led.setGroup(3);
+            } else if (foo <= 26) {
+                led.setGroup(4);
+            } else if (foo <= 30) {
+                led.setGroup(5);
+            } else if (foo <= 33) {
+                led.setGroup(6);
+            } else if (foo <= 35) {
+                led.setGroup(7);
+            }
+
+            leds[i][j] = led;
+        }
     }
 
     for (int i = 0; i < max_groups; i++) {
@@ -53,4 +72,8 @@ int Dodec::getNumBoards() {
 
 int Dodec::getMaxGroups() {
     return max_groups;
+}
+
+int Dodec::currentlyRendering() {
+    return num_leds * NUMBER_RENDERING;
 }

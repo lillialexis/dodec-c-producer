@@ -62,7 +62,7 @@ int draw(Dodec& dodec, long frameNumber)
     }
 
     /* Status should be equal to the number of bytes sent, or -1 if there was an error. */
-    int status = write_data(serialDevice, dodec.buffer, dodec.getNumBoards() * dodec.getNumLeds() * sizeof(RGB));
+    int status = write_data(serialDevice, dodec.buffer, dodec.currentlyRendering() * sizeof(RGB));
 
     if (status < 0) {
         printf("Error writing to serial device!\n");

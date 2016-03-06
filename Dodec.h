@@ -40,6 +40,7 @@ public:
     int getNumBoards();
     int getMaxGroups();
 
+    int currentlyRendering();
 };
 
 

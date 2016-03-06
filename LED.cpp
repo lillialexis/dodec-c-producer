@@ -90,3 +90,7 @@ RGB LED::getCurrentRGB(long frameNumber) {
 long LED::getStopTime() {
     return stopTime;
 }
+
+void LED::setGroup(int group) {
+    this->group = group;
+}

@@ -5,7 +5,7 @@
 #ifndef DODEC_C_PRODUCER_BOARD_H
 #define DODEC_C_PRODUCER_BOARD_H
 
-//#include "Includes.h"
+#include "Includes.h"
 
 typedef enum
 {
@@ -14,10 +14,42 @@ typedef enum
 } BoardOrientation;
 
 class Board {
+public:
     BoardOrientation orientation;
     
     int numberOfGroups;
     Group groups[];
+
+
+    Board(int numberOfGroups) : numberOfGroups(numberOfGroups) {
+        groups = new Group[numberOfGroups];
+    }
+
+
+    virtual ~Board() {
+
+    }
+
+
+    const BoardOrientation &getOrientation() const {
+        return orientation;
+    }
+
+    void setOrientation(const BoardOrientation &orientation) {
+        Board::orientation = orientation;
+    }
+
+    int getNumberOfGroups() const {
+        return numberOfGroups;
+    }
+
+    void setNumberOfGroups(int numberOfGroups) {
+        Board::numberOfGroups = numberOfGroups;
+    }
+
+    const Group *getGroups() const {
+        return groups;
+    }
 };
 
 
