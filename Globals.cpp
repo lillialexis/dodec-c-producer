@@ -2,7 +2,7 @@
 // Created by Lilli Szafranski on 3/5/16.
 //
 
-#include "Includes.h"
+#include "Globals.h"
 
 uint FRAME_RATE                 = 0;
 useconds_t LOOP_TIME            = 0;

@@ -10,11 +10,15 @@
 #include <stdio.h>
 #include <sys/fcntl.h>
 #include <sys/termios.h>
+#include <string.h>
 
 #include "Globals.h"
-#include "LED.h"
-#include "Serial.h"
 #include "Util.h"
+#include "LED.h"
+#include "Group.h"
+#include "Board.h"
+#include "Dodec.h"
+#include "Serial.h"
 
 
 #endif //DODEC_C_PRODUCER_INCLUDES_H

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "Includes.h"
+#include "PatternManager.h"
 
 
 int serialDevice = -1;
@@ -28,36 +29,40 @@ int ptd(long someTimeVal)
 }
 
 /* Return 0 if successful, 1 otherwise. */
-int updateLeds()
+int updateLeds(Dodec& dodec, long frameNumber)
 {
-    static __uint8_t hue = 1;
-    static HSV hsv;
-    hsv.h = hue;
-    hsv.s = 255;
-    hsv.v = 255;
+    for (int i = 0; i < dodec.getNumBoards(); i++) {
+        for (int j = 0; j < dodec.getNumLeds(); j++) {
+            LED led = dodec.leds[i][j];
 
-    RGB rgb = hsvToRgb(hsv);
+            if (frameNumber > led.getStopTime()) {
+                led.setStopTime(PatternManager::getNewDuration(frameNumber));
+                led.setStopHSV(PatternManager::getNewHSV(frameNumber));
+            }
 
-    for (int i = 0; i < NUM_LEDS; i++) {
-        //LED led = leds[i];
-        leds[i].r = rgb.r;
-        leds[i].g = rgb.g;
-        leds[i].b = rgb.b;
-        //leds[i].a = 255;
-
-        //leds[i] = led;
+            dodec.leds[i][j] = led;
+        }
     }
-
-    hue = (__uint8_t) ((hue + 1) % 255);
 
     return 0;
 }
 
 /* Return 0 if successful, 1 otherwise. */
-int draw()
+int draw(Dodec& dodec, long frameNumber)
 {
+    for (int i = 0; i < dodec.getNumBoards(); i++) {
+        for (int j = 0; j < dodec.getNumLeds(); j++) {
+            int index = (i * dodec.getNumLeds()) + j;
+
+            LED led = dodec.leds[i][j];
+            RGB rgb = led.getCurrentRGB(frameNumber);
+
+            dodec.buffer[index] = rgb;
+        }
+    }
+
     /* Status should be equal to the number of bytes sent, or -1 if there was an error. */
-    int status = write_data(serialDevice, leds, NUM_LEDS * sizeof(LED));
+    int status = write_data(serialDevice, dodec.buffer, dodec.currentlyRendering() * sizeof(RGB));
 
     if (status < 0) {
         printf("Error writing to serial device!\n");
@@ -68,9 +73,10 @@ int draw()
 }
 
 /* Return 0 if successful, 1 otherwise. */
-int loop()
+int loop(Dodec& dodec)
 {
     int status = 0;
+    static long frameNumber = 1;
 
     while (1) {
 
@@ -81,7 +87,7 @@ int loop()
         printf("Looping. Start time: %i, ideal loop duration: %i, ideal draw time: %i\n",
                ptd(loopStartTime), LOOP_TIME - lastDrawDuration, ptd(idealLoopEndTime));
 
-        status = updateLeds();
+        status = updateLeds(dodec, frameNumber);
         if (status != 0) {
             return 1;
         }
@@ -102,7 +108,7 @@ int loop()
 
         drawStartTime = currentTimeInMicroseconds();
 
-        status = draw();
+        status = draw(dodec, frameNumber);
         if (status != 0) {
             return 1;
         }
@@ -112,6 +118,8 @@ int loop()
 
         if (lastDrawDuration + (timeAfterRender - loopStartTime) > LOOP_TIME)
             printf("DRAWING TAKING TOO LONG!!\n");
+
+        frameNumber++;
     }
 }
 
@@ -120,7 +128,6 @@ int main()
     programStartTime = currentTimeInMicroseconds();
 
     initGlobals();
-    initLEDs();
 
     serialDevice = new_serial_device("/dev/ttyS0");
 
@@ -129,8 +136,10 @@ int main()
         return 1;
     }
 
+    Dodec dodec;
+
     /* Should only exit on error... */
-    int status = loop();
+    int status = loop(dodec);
 
     return status;
 }
